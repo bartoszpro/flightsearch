@@ -19,7 +19,9 @@ export default function Navbar() {
     <header className='text-black shadow-md'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
         <div className='flex items-center space-x-4'>
-          <div className='text-xl font-bold sm:text-2xl'>FlightSearch</div>
+          <a href='/' className='text-xl font-bold sm:text-2xl'>
+            FlightSearch
+          </a>
         </div>
         <div className='flex-1 flex justify-center items-center space-x-2 sm:space-x-6'>
           <div className='relative flex-grow max-w-xs sm:max-w-lg'>

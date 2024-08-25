@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Navbar from "./components/Navbar";
+import SearchBar from "./components/SearchBar";
 
 export default function Home() {
   return (
@@ -20,12 +21,8 @@ export default function Home() {
         <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white whitespace-nowrap text-xl sm:text-3xl'>
           Find the best flight for the right price
         </h1>
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex-grow max-w-lg'>
-          <input
-            type='text'
-            placeholder='Search...'
-            className='border w-full min-w-[120px] sm:min-w-[200px] px-7 py-2 rounded-3xl text-black'
-          />
+        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4'>
+          <SearchBar />
         </div>
       </div>
     </>
