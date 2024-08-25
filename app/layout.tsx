@@ -1,8 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import {
+  Aladin,
+  Alegreya,
+  Aleo,
+  Arvo,
+  Besley,
+  Graduate,
+  Inter,
+  Lato,
+  Modern_Antiqua,
+  Montserrat,
+  Open_Sans,
+  Poppins,
+  Roboto_Slab,
+  Rokkitt,
+  Zen_Antique_Soft,
+} from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Poppins({ subsets: ["latin"], weight: ["500"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={inter.className}>{children}</body>
     </html>
   );
