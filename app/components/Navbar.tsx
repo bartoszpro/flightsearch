@@ -19,17 +19,17 @@ export default function Navbar() {
     <header className='text-black shadow-md'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
         <div className='flex items-center space-x-4'>
-          <div className='text-2xl font-bold'>FlightSearch</div>
+          <div className='text-xl font-bold sm:text-2xl'>FlightSearch</div>
         </div>
-        <div className='flex-1 flex justify-center items-center space-x-6 pl-6 pr-6'>
-          <div className='relative flex-grow max-w-lg'>
+        <div className='flex-1 flex justify-center items-center space-x-2 sm:space-x-6'>
+          <div className='relative flex-grow max-w-xs sm:max-w-lg'>
             <input
               type='text'
               placeholder='Search...'
-              className='border w-full min-w-[200px] px-7 py-2 rounded-3xl text-black'
+              className='border w-full min-w-[120px] sm:min-w-[200px] px-4 sm:px-7 py-2 rounded-3xl text-black'
             />
           </div>
-          <nav className='hidden lg:flex space-x-6'>
+          <nav className='hidden lg:flex space-x-2 sm:space-x-6'>
             <a href='#' className='hover:text-gray-200'>
               Flights
             </a>
@@ -41,7 +41,7 @@ export default function Navbar() {
             </a>
           </nav>
         </div>
-        <div className='hidden lg:flex items-center space-x-6'>
+        <div className='hidden lg:flex items-center space-x-2 sm:space-x-6'>
           <div className='flex items-center'>
             <label htmlFor='currency' className='mr-2'>
               Currency:
@@ -82,7 +82,7 @@ export default function Navbar() {
       </div>
       {isOpen && (
         <div className='lg:hidden'>
-          <nav className='flex flex-col items-center space-y-4 p-4 bg-white'>
+          <nav className='flex flex-col items-center space-y-4 pb-4 bg-white'>
             <a href='#' className='hover:text-gray-200'>
               Flights
             </a>
