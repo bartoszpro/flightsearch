@@ -34,6 +34,25 @@ interface FlightData {
   purchaseLinks?: PurchaseLink[];
 }
 
+const formatDate = (dateTime: string) => {
+  const date = new Date(dateTime);
+  return date.toLocaleDateString();
+};
+
+const formatTime = (dateTime: string) => {
+  const date = new Date(dateTime);
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+};
+
+const calculateDuration = (departure: string, arrival: string) => {
+  const dep = new Date(departure);
+  const arr = new Date(arrival);
+  const diff = Math.abs(arr.getTime() - dep.getTime());
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  return `${hours}h ${minutes}m`;
+};
+
 export default function Results() {
   const searchParams = useSearchParams();
   const source = searchParams.get("source");
@@ -106,20 +125,6 @@ export default function Results() {
     }
   }, [source, destination, startDate, endDate, classOfService, numAdults]);
 
-  const formatTime = (dateTime: string) => {
-    const date = new Date(dateTime);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  const calculateDuration = (departure: string, arrival: string) => {
-    const dep = new Date(departure);
-    const arr = new Date(arrival);
-    const diff = Math.abs(arr.getTime() - dep.getTime());
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    return `${hours}h ${minutes}m`;
-  };
-
   return (
     <>
       <Navbar />
@@ -134,21 +139,26 @@ export default function Results() {
       ) : (
         <div className='max-w-screen-xl w-full mt-4 px-4 sm:px-8 mx-auto'>
           <h1 className='text-2xl font-bold'>Results</h1>
-          <p className='text-xs  mb-4'>Currently limited results.</p>
+          <p className='text-xs'>Lowest prices may take a second to appear.</p>
+          <p className='text-xs mb-4'>Currently limited to 3 results.</p>
           <div className='mt-4'>
             {flights.map((flight, flightIndex) => (
               <div
                 key={flightIndex}
-                className='mb-4 p-4 bg-white shadow-md rounded-lg'
+                className='mb-4 p-4 bg-white shadow-md rounded-3xl'
               >
                 {flight.segments &&
                 flight.segments.length > 0 &&
                 flight.segments[0].legs ? (
                   <>
                     <div>
-                      <h2 className='font-bold text-lg mb-2'>
-                        Outbound Flight
-                      </h2>
+                      <h2 className='font-bold text-lg'>Outbound Flight</h2>
+                      <p className='text-gray-600'>
+                        Date:{" "}
+                        {formatDate(
+                          flight.segments[0].legs[0].departureDateTime
+                        )}
+                      </p>
                       {flight.segments[0].legs.map((leg, legIndex) => (
                         <div
                           key={legIndex}
@@ -161,7 +171,7 @@ export default function Results() {
                               className='w-10 h-10 mr-4'
                             />
                             <div>
-                              <p className=' text-lg'>
+                              <p className='text-lg'>
                                 {formatTime(leg.departureDateTime)} -{" "}
                                 {formatTime(leg.arrivalDateTime)}
                               </p>
@@ -186,9 +196,13 @@ export default function Results() {
                     </div>
                     {flight.segments[1] && flight.segments[1].legs ? (
                       <div className='border-t pt-3'>
-                        <h2 className='font-bold text-lg mb-2'>
-                          Return Flight
-                        </h2>
+                        <h2 className='font-bold text-lg'>Return Flight</h2>
+                        <p className='text-gray-600'>
+                          Date:{" "}
+                          {formatDate(
+                            flight.segments[1].legs[0].departureDateTime
+                          )}
+                        </p>
                         {flight.segments[1].legs.map((leg, legIndex) => (
                           <div
                             key={legIndex}
@@ -201,7 +215,7 @@ export default function Results() {
                                 className='w-10 h-10 mr-4'
                               />
                               <div>
-                                <p className=' text-lg'>
+                                <p className='text-lg'>
                                   {formatTime(leg.departureDateTime)} -{" "}
                                   {formatTime(leg.arrivalDateTime)}
                                 </p>
@@ -255,7 +269,7 @@ export default function Results() {
                       href={flight.purchaseLinks[0].url}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-600'
+                      className='bg-blue-600 text-white py-2 px-4 rounded-3xl hover:bg-yellow-600'
                     >
                       View Deal
                     </a>
