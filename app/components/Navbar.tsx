@@ -20,17 +20,18 @@ export default function Navbar() {
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
         <div>
           <div className='flex items-center space-x-2'>
-            <div className='h-8 w-auto'></div>
-            <a
-              href='/'
-              className='text-with-drop-effect text-xl font-medium sm:text-2xl hover:text-emerald-400'
-              data-text='FlightSearch'
-            >
+            <div className='h-8 w-auto'>
               <img
                 src='https://i.imgur.com/Fljj5sd.png'
                 className='h-8 w-auto'
                 alt='Flight Search Logo'
               />
+            </div>
+            <a
+              href='/'
+              className='text-with-drop-effect text-xl font-medium sm:text-2xl hover:text-emerald-400'
+              data-text='FlightSearch'
+            >
               FlightSearch
             </a>
           </div>
