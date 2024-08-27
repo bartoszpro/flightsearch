@@ -1,23 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import dayjs from "dayjs";
 
 export default function SearchBar() {
   const router = useRouter();
   const [startDate, setStartDate] = useState<string>("2024-09-15");
   const [endDate, setEndDate] = useState<string>("2024-09-21");
-  const [sourceAirportCode, setSourceAirportCode] = useState<string>("EWR");
+  const [sourceCity, setSourceCity] = useState<string>("");
+  const [destinationCity, setDestinationCity] = useState<string>("");
+  const [sourceAirportCode, setSourceAirportCode] = useState<string>("");
   const [destinationAirportCode, setDestinationAirportCode] =
-    useState<string>("PHX");
+    useState<string>("");
   const [classOfService, setClassOfService] = useState<string>("ECONOMY");
   const [numAdults, setNumAdults] = useState<number>(1);
 
   const handleSearch = () => {
-    if (!validateDates(startDate, endDate)) {
+    console.log("Source Airport Code:", sourceAirportCode);
+    console.log("Destination Airport Code:", destinationAirportCode);
+
+    if (
+      !validateDates(startDate, endDate) ||
+      !sourceAirportCode ||
+      !destinationAirportCode
+    ) {
       alert(
-        "Invalid date values. Please ensure the dates are in the future and in the correct format."
+        "Invalid input values. Please ensure the dates are in the future, the cities are correctly specified, and in the correct format."
       );
       return;
     }
@@ -33,32 +43,86 @@ export default function SearchBar() {
     const endDateObj = new Date(end);
     const today = new Date();
 
-    if (
+    return !(
       startDateObj < today ||
       endDateObj < today ||
       startDateObj > endDateObj
-    ) {
-      return false;
-    }
-
-    return true;
+    );
   };
+
+  const fetchAirportCode = async (
+    city: string,
+    setAirportCode: (code: string) => void,
+    setCity: (cityWithCode: string) => void
+  ) => {
+    try {
+      const response = await axios.get(
+        "https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchAirport",
+        {
+          params: { query: city },
+          headers: {
+            "x-rapidapi-key":
+              "70a6cb126emsha5ea9357a6dc219p1faacajsnebc68dfe6202",
+            "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
+          },
+        }
+      );
+      console.log("API Response:", response.data);
+      const airportCode = response.data.data[0].airportCode || "";
+      setAirportCode(airportCode);
+      setCity(`${city} (${airportCode})`);
+      console.log(`Fetched Airport Code for ${city}:`, airportCode);
+    } catch (error) {
+      console.error("Error fetching airport code:", error);
+      alert("Failed to fetch airport code. Please check the city name.");
+    }
+  };
+
+  useEffect(() => {
+    if (sourceCity) {
+      const debounceTimeout = setTimeout(
+        () =>
+          fetchAirportCode(
+            sourceCity.split(" (")[0],
+            setSourceAirportCode,
+            setSourceCity
+          ),
+        500
+      );
+      return () => clearTimeout(debounceTimeout);
+    }
+  }, [sourceCity]);
+
+  useEffect(() => {
+    if (destinationCity) {
+      const debounceTimeout = setTimeout(
+        () =>
+          fetchAirportCode(
+            destinationCity.split(" (")[0],
+            setDestinationAirportCode,
+            setDestinationCity
+          ),
+        500
+      );
+      return () => clearTimeout(debounceTimeout);
+    }
+  }, [destinationCity]);
 
   return (
     <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
       <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden'>
         <input
           type='text'
-          placeholder='From'
-          value={sourceAirportCode}
-          onChange={(e) => setSourceAirportCode(e.target.value)}
+          placeholder='From (City)'
+          value={sourceCity}
+          onChange={(e) => setSourceCity(e.target.value)}
           className='flex-grow h-full text-black p-4 bg-transparent'
         />
         <input
           type='text'
-          placeholder='To'
-          value={destinationAirportCode}
-          onChange={(e) => setDestinationAirportCode(e.target.value)}
+          placeholder='To (City)'
+          value={destinationCity}
+          onChange={(e) => setDestinationCity(e.target.value)}
           className='flex-grow h-full text-black p-4 bg-transparent'
         />
         <div className='flex items-center'>

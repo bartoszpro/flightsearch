@@ -4,6 +4,7 @@ import SearchBar from "./components/SearchBar";
 import ReviewGrid from "./components/ReviewGrid";
 import FeatureGrid from "./components/FeatureGrid";
 import Footer from "./components/Footer";
+import PopularDestinationsGrid from "./components/PopularDestinationsGrid";
 
 const Home: React.FC = () => {
   return (
@@ -21,16 +22,15 @@ const Home: React.FC = () => {
           className='w-full h-full object-cover object-[20%_30%]'
           alt='Fixed Height Image'
         />
-        <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white whitespace-nowrap text-xl sm:text-3xl'>
+        <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white whitespace-nowrap text-xl sm:text-3xl font-medium'>
           Find the best flight for the right price
         </h1>
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4'>
           <SearchBar />
         </div>
       </div>
-      <ReviewGrid />
-      <FeatureGrid />
-      <div className='max-w-screen-xl mx-auto mt-10 bg-white rounded-2xl'>
+      <PopularDestinationsGrid />
+      <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl'>
         <h2 className='text-black text-md font-medium'>Best Flight Deals</h2>
         <p className='text-black text-sm'>
           No need to shop multiple sites any more. We've already done that by

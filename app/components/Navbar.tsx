@@ -18,21 +18,25 @@ export default function Navbar() {
   return (
     <header className='text-black drop-shadow-sm'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
-        <div className='flex items-center space-x-4'>
-          <div className='h-8 w-auto'>
-            <img
-              src='https://i.imgur.com/Fljj5sd.png'
-              className='h-8 w-auto'
-              alt='Flight Search Logo'
-            />
+        <div>
+          <div className='flex items-center space-x-2'>
+            <div className='h-8 w-auto'></div>
+            <a
+              href='/'
+              className='text-with-drop-effect text-xl font-medium sm:text-2xl hover:text-emerald-400'
+              data-text='FlightSearch'
+            >
+              <img
+                src='https://i.imgur.com/Fljj5sd.png'
+                className='h-8 w-auto'
+                alt='Flight Search Logo'
+              />
+              FlightSearch
+            </a>
           </div>
-          <a
-            href='/'
-            className='text-with-drop-effect text-xl font-medium sm:text-2xl'
-            data-text='FlightSearch'
-          >
-            FlightSearch
-          </a>
+          <p className='text-xs text-gray-600 leading-none mt-1'>
+            Powered by TripAdvisor.
+          </p>
         </div>
 
         <div className='flex-1 flex justify-center items-center space-x-2 sm:space-x-6'>
@@ -44,17 +48,18 @@ export default function Navbar() {
             />
           </div>
           <nav className='font-medium hidden lg:flex space-x-2 sm:space-x-6'>
-            <a href='/' className='hover:text-gray-200'>
+            <a href='/' className='hover:text-emerald-600'>
               Flights
             </a>
-            <a href='#' className='hover:text-gray-200'>
+            <a href='#' className='hover:text-emerald-600'>
               Discover
             </a>
-            <a href='#' className='hover:text-gray-200'>
+            <a href='#' className='hover:text-emerald-600'>
               More
             </a>
           </nav>
         </div>
+
         <div className='font-medium hidden lg:flex items-center space-x-2 sm:space-x-6'>
           <div className='flex items-center'>
             <label htmlFor='currency' className='mr-2'>
@@ -64,17 +69,18 @@ export default function Navbar() {
               id='currency'
               value={currency}
               onChange={handleCurrencyChange}
-              className='px-2 py-1 rounded-md text-black'
+              className='px-2 py-1 rounded-md text-black focus:outline-none focus:ring focus:ring-emerald-600'
             >
               <option value='USD'>USD</option>
               <option value='EUR'>EUR</option>
               <option value='GBP'>GBP</option>
             </select>
           </div>
-          <a href='#' className='hover:text-gray-200 whitespace-nowrap'>
+          <a href='#' className='hover:text-emerald-600 whitespace-nowrap'>
             Sign In
           </a>
         </div>
+
         <div className='lg:hidden'>
           <button onClick={toggleMenu} className='focus:outline-none'>
             <svg
@@ -94,6 +100,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+
       {isOpen && (
         <div className='lg:hidden'>
           <nav className='flex flex-col items-center space-y-4 pb-4 bg-white'>

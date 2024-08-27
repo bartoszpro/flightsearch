@@ -108,7 +108,7 @@ export default function Results() {
         );
 
         if (validFlights.length > 0) {
-          setFlights(validFlights.slice(0, 3));
+          setFlights(validFlights);
         } else {
           setErrorMessage(
             "No flights found with valid pricing for the given criteria."
@@ -164,8 +164,9 @@ export default function Results() {
       ) : (
         <div className='max-w-screen-xl w-full mt-4 px-4 sm:px-8 mx-auto'>
           <h1 className='text-2xl font-bold'>Results</h1>
-          <p className='text-xs'>Lowest prices may take a second to appear.</p>
-          <p className='text-xs mb-4'>Currently limited to 3 results.</p>
+          <p className='text-xs mb-4'>
+            Lowest prices may take a second to appear.
+          </p>
           <div className='mt-4'>
             {flights.map((flight, flightIndex) => (
               <div
