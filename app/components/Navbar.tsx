@@ -16,13 +16,25 @@ export default function Navbar() {
   };
 
   return (
-    <header className='text-black shadow-md'>
+    <header className='text-black drop-shadow-sm'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
         <div className='flex items-center space-x-4'>
-          <a href='/' className='text-xl font-bold sm:text-2xl'>
+          <div className='h-8 w-auto'>
+            <img
+              src='https://i.imgur.com/Fljj5sd.png'
+              className='h-8 w-auto'
+              alt='Flight Search Logo'
+            />
+          </div>
+          <a
+            href='/'
+            className='text-with-drop-effect text-xl font-medium sm:text-2xl'
+            data-text='FlightSearch'
+          >
             FlightSearch
           </a>
         </div>
+
         <div className='flex-1 flex justify-center items-center space-x-2 sm:space-x-6'>
           <div className='relative flex-grow max-w-xs sm:max-w-lg'>
             <input
@@ -31,8 +43,8 @@ export default function Navbar() {
               className='border w-full min-w-[120px] sm:min-w-[200px] px-4 sm:px-7 py-2 rounded-3xl text-black'
             />
           </div>
-          <nav className='hidden lg:flex space-x-2 sm:space-x-6'>
-            <a href='#' className='hover:text-gray-200'>
+          <nav className='font-medium hidden lg:flex space-x-2 sm:space-x-6'>
+            <a href='/' className='hover:text-gray-200'>
               Flights
             </a>
             <a href='#' className='hover:text-gray-200'>
@@ -43,7 +55,7 @@ export default function Navbar() {
             </a>
           </nav>
         </div>
-        <div className='hidden lg:flex items-center space-x-2 sm:space-x-6'>
+        <div className='font-medium hidden lg:flex items-center space-x-2 sm:space-x-6'>
           <div className='flex items-center'>
             <label htmlFor='currency' className='mr-2'>
               Currency:

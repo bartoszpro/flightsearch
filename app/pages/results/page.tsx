@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Navbar from "@/app/components/Navbar";
 
 interface Leg {
@@ -53,6 +53,17 @@ const calculateDuration = (departure: string, arrival: string) => {
   return `${hours}h ${minutes}m`;
 };
 
+const retry = async (fn: () => Promise<any>, retries = 3, delay = 1000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+};
+
 export default function Results() {
   const searchParams = useSearchParams();
   const source = searchParams.get("source");
@@ -88,8 +99,8 @@ export default function Results() {
           },
         };
 
-        const response = await axios.request(options);
-        console.log(response.data);
+        const response = await retry(() => axios.request(options), 3, 2000);
+        console.log("API Response:", response.data);
 
         const allFlights = response.data?.data?.flights || [];
         const validFlights = allFlights.filter((flight: FlightData) =>
@@ -104,7 +115,19 @@ export default function Results() {
           );
         }
       } catch (error) {
-        setErrorMessage("Failed to fetch flights. Please try again later.");
+        console.error("Error fetching flights:", error);
+
+        if (error instanceof AxiosError) {
+          setErrorMessage(
+            `Failed to fetch flights: ${
+              error.response?.data?.message || error.message
+            }`
+          );
+        } else if (error instanceof Error) {
+          setErrorMessage(`Failed to fetch flights: ${error.message}`);
+        } else {
+          setErrorMessage("An unknown error occurred while fetching flights.");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -129,7 +152,9 @@ export default function Results() {
     <>
       <Navbar />
       {isLoading ? (
-        <div className='mt-4 text-blue-600'>Loading...</div>
+        <div className='mt-4 flex justify-center'>
+          <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-emerald-600'></div>
+        </div>
       ) : errorMessage ? (
         <div className='mt-4 text-red-500'>{errorMessage}</div>
       ) : flights.length === 0 ? (
@@ -269,7 +294,7 @@ export default function Results() {
                       href={flight.purchaseLinks[0].url}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='bg-blue-600 text-white py-2 px-4 rounded-3xl hover:bg-yellow-600'
+                      className='bg-emerald-600 drop-shadow-sm text-white py-2 px-4 rounded-3xl hover:bg-emerald-500'
                     >
                       View Deal
                     </a>

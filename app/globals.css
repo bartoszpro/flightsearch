@@ -8,8 +8,48 @@
   }
 }
 
+#root-portal {
+  z-index: 1000;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+
+.text-with-drop-effect {
+  position: relative;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.text-with-drop-effect::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0.5px;
+  left: 0.5px;
+  color: black;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+.image-with-drop-effect {
+  position: relative;
+  display: inline-block;
+}
+
+.image-with-drop-effect::before {
+  content: '';
+  position: absolute;
+  top: 0.25px;
+  left: 0.25px;
+  background-image: url('https://i.imgur.com/Fljj5sd.png');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  opacity: 0.7;
+  filter: brightness(0);
+}
+

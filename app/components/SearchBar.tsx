@@ -6,11 +6,11 @@ import dayjs from "dayjs";
 
 export default function SearchBar() {
   const router = useRouter();
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [sourceAirportCode, setSourceAirportCode] = useState<string>("BOM");
+  const [startDate, setStartDate] = useState<string>("2024-09-15");
+  const [endDate, setEndDate] = useState<string>("2024-09-21");
+  const [sourceAirportCode, setSourceAirportCode] = useState<string>("EWR");
   const [destinationAirportCode, setDestinationAirportCode] =
-    useState<string>("DEL");
+    useState<string>("PHX");
   const [classOfService, setClassOfService] = useState<string>("ECONOMY");
   const [numAdults, setNumAdults] = useState<number>(1);
 
@@ -46,7 +46,7 @@ export default function SearchBar() {
 
   return (
     <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
-      <div className='flex flex-row w-full bg-white rounded-lg overflow-hidden'>
+      <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden'>
         <input
           type='text'
           placeholder='From'
@@ -67,16 +67,16 @@ export default function SearchBar() {
             placeholder='Start Date'
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className='border-0 w-32 h-full text-black p-3 bg-transparent'
+            className='border-0 w-4/12 h-full text-black bg-transparent'
             style={{ lineHeight: "normal", verticalAlign: "middle" }}
           />
-          <span className='p-4 bg-white text-black'>-</span>
+          <span className='px-4 bg-white text-black'>—</span>
           <input
             type='date'
             placeholder='End Date'
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className='border-0 w-32 h-full text-black p-3 bg-transparent'
+            className='border-0 w-4/12 h-full text-black bg-transparent'
             style={{ lineHeight: "normal", verticalAlign: "middle" }}
           />
         </div>
@@ -99,7 +99,7 @@ export default function SearchBar() {
           className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent'
         />
         <button
-          className='bg-blue-600 text-white h-full p-4 flex-grow-0 flex-shrink-0'
+          className='bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0'
           onClick={handleSearch}
         >
           Search
