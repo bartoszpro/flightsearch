@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import Navbar from "@/app/components/Navbar";
 
+const flightCache: { [key: string]: any } = {};
+
 interface Leg {
   arrivalDateTime: string;
   departureDateTime: string;
@@ -79,6 +81,15 @@ export default function Results() {
 
   useEffect(() => {
     const searchFlights = async () => {
+      const cacheKey = `${source}-${destination}-${startDate}-${endDate}-${classOfService}-${numAdults}`;
+
+      if (flightCache[cacheKey]) {
+        console.log("Using cached data for flights.");
+        setFlights(flightCache[cacheKey]);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const options = {
           method: "GET",
@@ -108,6 +119,7 @@ export default function Results() {
         );
 
         if (validFlights.length > 0) {
+          flightCache[cacheKey] = validFlights;
           setFlights(validFlights);
         } else {
           setErrorMessage(

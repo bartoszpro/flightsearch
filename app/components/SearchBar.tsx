@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import dayjs from "dayjs";
 
+const cache: { [key: string]: string } = {};
+
 export default function SearchBar() {
   const router = useRouter();
   const [startDate, setStartDate] = useState<string>("2024-09-15");
@@ -55,6 +57,14 @@ export default function SearchBar() {
     setAirportCode: (code: string) => void,
     setCity: (cityWithCode: string) => void
   ) => {
+    if (cache[city]) {
+      const cachedCode = cache[city];
+      setAirportCode(cachedCode);
+      setCity(`${city} (${cachedCode})`);
+      console.log(`Used cached Airport Code for ${city}:`, cachedCode);
+      return;
+    }
+
     try {
       const response = await axios.get(
         "https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchAirport",
@@ -69,6 +79,7 @@ export default function SearchBar() {
       );
       console.log("API Response:", response.data);
       const airportCode = response.data.data[0].airportCode || "";
+      cache[city] = airportCode;
       setAirportCode(airportCode);
       setCity(`${city} (${airportCode})`);
       console.log(`Fetched Airport Code for ${city}:`, airportCode);
