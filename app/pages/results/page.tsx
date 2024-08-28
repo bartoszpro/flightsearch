@@ -104,8 +104,7 @@ export default function Results() {
             returnDate: endDate,
           },
           headers: {
-            "x-rapidapi-key":
-              "70a6cb126emsha5ea9357a6dc219p1faacajsnebc68dfe6202",
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
             "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
           },
         };
