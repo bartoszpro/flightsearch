@@ -31,7 +31,7 @@ const Home: React.FC = () => {
       </div>
       <PopularDestinationsGrid />
       <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl'>
-        <h2 className='text-black text-md font-medium'>Best Flight Deals</h2>
+        <h2 className='text-black text-lg font-medium'>Best Flight Deals</h2>
         <p className='text-black text-sm'>
           No need to shop multiple sites any more. We've already done that by
           searching hundreds of cheap flights for you– scouring premium

@@ -175,7 +175,7 @@ export default function Results() {
         </div>
       ) : (
         <div className='max-w-screen-xl w-full mt-4 px-4 sm:px-8 mx-auto'>
-          <h1 className='text-2xl font-bold'>Results</h1>
+          <h1 className='text-2xl font-medium'>Results</h1>
           <p className='text-xs mb-4'>
             Lowest prices may take a second to appear.
           </p>
@@ -190,7 +190,7 @@ export default function Results() {
                 flight.segments[0].legs ? (
                   <>
                     <div>
-                      <h2 className='font-bold text-lg'>Outbound Flight</h2>
+                      <h2 className='font-medium text-lg'>Outbound Flight</h2>
                       <p className='text-gray-600'>
                         Date:{" "}
                         {formatDate(
@@ -209,7 +209,7 @@ export default function Results() {
                               className='w-10 h-10 mr-4'
                             />
                             <div>
-                              <p className='text-lg'>
+                              <p className='text-md'>
                                 {formatTime(leg.departureDateTime)} -{" "}
                                 {formatTime(leg.arrivalDateTime)}
                               </p>
@@ -234,7 +234,7 @@ export default function Results() {
                     </div>
                     {flight.segments[1] && flight.segments[1].legs ? (
                       <div className='border-t pt-3'>
-                        <h2 className='font-bold text-lg'>Return Flight</h2>
+                        <h2 className='font-medium text-lg'>Return Flight</h2>
                         <p className='text-gray-600'>
                           Date:{" "}
                           {formatDate(
@@ -253,7 +253,7 @@ export default function Results() {
                                 className='w-10 h-10 mr-4'
                               />
                               <div>
-                                <p className='text-lg'>
+                                <p className='text-md'>
                                   {formatTime(leg.departureDateTime)} -{" "}
                                   {formatTime(leg.arrivalDateTime)}
                                 </p>
@@ -288,12 +288,12 @@ export default function Results() {
                 {flight.purchaseLinks && flight.purchaseLinks.length > 0 ? (
                   <div className='border-t flex justify-between items-center pt-4'>
                     <div>
-                      <p className='font-bold text-lg'>Total</p>
-                      <p className='text-lg'>
+                      <p className='font-medium text-lg'>Total</p>
+                      <p className='text-md'>
                         {flight.purchaseLinks[0].currency}$
                         {flight.purchaseLinks[0].totalPrice.toFixed(2)}
                       </p>
-                      <p className='text-lg'>
+                      <p className='text-md'>
                         Price per person: {flight.purchaseLinks[0].currency}$
                         {(
                           flight.purchaseLinks[0].totalPrice / numAdults
@@ -307,7 +307,7 @@ export default function Results() {
                       href={flight.purchaseLinks[0].url}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='bg-emerald-600 drop-shadow-sm text-white py-2 px-4 rounded-3xl hover:bg-emerald-500'
+                      className='bg-emerald-600 drop-shadow-sm text-white py-2 px-4 rounded-3xl hover:bg-emerald-500 font-medium'
                     >
                       View Deal
                     </a>

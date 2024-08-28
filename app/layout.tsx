@@ -20,7 +20,7 @@ import "./globals.css";
 
 const inter = Poppins({
   subsets: ["latin"],
-  weight: ["200", "400", "500"],
+  weight: ["200", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
