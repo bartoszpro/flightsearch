@@ -75,7 +75,7 @@ const ReviewGrid: React.FC = () => {
               <p className='text-xs text-gray-500'>
                 Top rated in {review.category}
               </p>
-              <p className='text-sm mt-2'>"{review.reviewText}"</p>
+              <p className='text-sm mt-2'>&quot;{review.reviewText}&quot;</p>
             </div>
             <div className='flex items-center mt-4'>
               <img

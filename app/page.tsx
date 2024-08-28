@@ -33,11 +33,11 @@ const Home: React.FC = () => {
       <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl'>
         <h2 className='text-black text-lg font-medium'>Best Flight Deals</h2>
         <p className='text-black text-sm'>
-          No need to shop multiple sites any more. We've already done that by
-          searching hundreds of cheap flights for you– scouring premium
+          No need to shop multiple sites any more. We&apos;ve already done that
+          by searching hundreds of cheap flights for you- scouring premium
           airlines, low-cost carriers and the biggest online travel agencies for
-          the best deals. We'll even check alternate dates and nearby airports
-          to help you save money, time, even sanity on airline tickets.
+          the best deals. We&apos;ll even check alternate dates and nearby
+          airports to help you save money, time, even sanity on airline tickets.
         </p>
       </div>
       <Footer />

@@ -1,11 +1,10 @@
 "use client";
+const flightCache: { [key: string]: any } = {};
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import Navbar from "@/app/components/Navbar";
-
-const flightCache: { [key: string]: any } = {};
 
 interface Leg {
   arrivalDateTime: string;
@@ -66,7 +65,7 @@ const retry = async (fn: () => Promise<any>, retries = 3, delay = 1000) => {
   }
 };
 
-export default function Results() {
+function ResultsContent() {
   const searchParams = useSearchParams();
   const source = searchParams.get("source");
   const destination = searchParams.get("destination");
@@ -104,7 +103,7 @@ export default function Results() {
             returnDate: endDate,
           },
           headers: {
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY!,
             "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
           },
         };
@@ -321,5 +320,13 @@ export default function Results() {
         </div>
       )}
     </>
+  );
+}
+
+export default function Results() {
+  return (
+    <Suspense fallback={<div>Loading search results...</div>}>
+      <ResultsContent />
+    </Suspense>
   );
 }
