@@ -35,7 +35,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel='icon' href='/favicon.ico' type='image/x-icon' />
+        <meta name='description' content="Bartosz Protasewicz's portfolio." />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <title>
+          Cheap Flights, Airline Tickets and Airfare Search - FlightSearch
+        </title>
+      </head>
+      <body className={`${inter.className}`}>{children}</body>
     </html>
   );
 }
