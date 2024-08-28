@@ -18,6 +18,7 @@ export default function SearchBar() {
     useState<string>("");
   const [classOfService, setClassOfService] = useState<string>("ECONOMY");
   const [numAdults, setNumAdults] = useState<number>(1);
+  const [tripType, setTripType] = useState<string>("Round Trip");
 
   const handleSearch = () => {
     console.log("Source Airport Code:", sourceAirportCode);
@@ -36,7 +37,7 @@ export default function SearchBar() {
 
     const formattedStartDate = dayjs(startDate).format("YYYY-MM-DD");
     const formattedEndDate = dayjs(endDate).format("YYYY-MM-DD");
-    const query = `?source=${sourceAirportCode}&destination=${destinationAirportCode}&startDate=${formattedStartDate}&endDate=${formattedEndDate}&classOfService=${classOfService}&numAdults=${numAdults}`;
+    const query = `?source=${sourceAirportCode}&destination=${destinationAirportCode}&startDate=${formattedStartDate}&endDate=${formattedEndDate}&classOfService=${classOfService}&numAdults=${numAdults}&tripType=${tripType}`;
     router.push(`/pages/results${query}`);
   };
 
@@ -120,7 +121,39 @@ export default function SearchBar() {
   }, [destinationCity]);
 
   return (
-    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto '>
+    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
+      <div className='flex justify-center space-x-4 mb-4'>
+        <button
+          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
+            tripType === "Round Trip"
+              ? "bg-emerald-500 text-white"
+              : "bg-white text-black"
+          }`}
+          onClick={() => setTripType("Round Trip")}
+        >
+          Round Trip
+        </button>
+        <button
+          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
+            tripType === "One-way"
+              ? "bg-emerald-500 text-white"
+              : "bg-white text-black"
+          }`}
+          onClick={() => setTripType("One-way")}
+        >
+          One-way
+        </button>
+        <button
+          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
+            tripType === "Multi-city"
+              ? "bg-emerald-500 text-white"
+              : "bg-white text-black"
+          }`}
+          onClick={() => setTripType("Multi-city")}
+        >
+          Multi-city
+        </button>
+      </div>
       <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden border-emerald-600 border'>
         <input
           type='text'
@@ -174,7 +207,7 @@ export default function SearchBar() {
           className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <button
-          className='bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0'
+          className='bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0 hover:bg-emerald-400'
           onClick={handleSearch}
         >
           Search

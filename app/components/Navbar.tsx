@@ -32,7 +32,7 @@ export default function Navbar() {
             <span>FlightSearch</span>
           </a>
           <p className='text-xs text-gray-600 leading-none mt-1'>
-            Powered by TripAdvisor.
+            Powered by Tripadvisor.
           </p>
         </div>
 
