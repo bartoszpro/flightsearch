@@ -19,22 +19,18 @@ export default function Navbar() {
     <header className='text-black drop-shadow-sm'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
         <div>
-          <div className='flex items-center space-x-2'>
-            <div className='h-8 w-auto'>
-              <img
-                src='https://i.imgur.com/Fljj5sd.png'
-                className='h-8 w-auto'
-                alt='Flight Search Logo'
-              />
-            </div>
-            <a
-              href='/'
-              className='text-with-drop-effect text-xl font-medium sm:text-2xl hover:text-emerald-400'
-              data-text='FlightSearch'
-            >
-              FlightSearch
-            </a>
-          </div>
+          <a
+            href='/'
+            className='flex items-center space-x-2 text-with-drop-effect text-2xl font-medium sm:text-2xl text-emerald-600 hover:text-opacity-60 hover:opacity-60'
+            data-text='FlightSearch'
+          >
+            <img
+              src='https://i.imgur.com/Fljj5sd.png'
+              className='h-8 w-auto'
+              alt='Flight Search Logo'
+            />
+            <span>FlightSearch</span>
+          </a>
           <p className='text-xs text-gray-600 leading-none mt-1'>
             Powered by TripAdvisor.
           </p>
@@ -45,7 +41,7 @@ export default function Navbar() {
             <input
               type='text'
               placeholder='Search...'
-              className='border w-full min-w-[120px] sm:min-w-[200px] px-4 sm:px-7 py-2 rounded-3xl text-black'
+              className='border w-full min-w-[120px] sm:min-w-[200px] px-4 sm:px-7 py-2 rounded-3xl text-black focus:outline-emerald-600'
             />
           </div>
           <nav className='font-medium hidden lg:flex space-x-2 sm:space-x-6'>

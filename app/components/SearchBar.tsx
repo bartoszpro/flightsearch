@@ -120,21 +120,21 @@ export default function SearchBar() {
   }, [destinationCity]);
 
   return (
-    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
-      <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden'>
+    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto '>
+      <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden border-emerald-600 border'>
         <input
           type='text'
           placeholder='From (City)'
           value={sourceCity}
           onChange={(e) => setSourceCity(e.target.value)}
-          className='flex-grow h-full text-black p-4 bg-transparent'
+          className='flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <input
           type='text'
           placeholder='To (City)'
           value={destinationCity}
           onChange={(e) => setDestinationCity(e.target.value)}
-          className='flex-grow h-full text-black p-4 bg-transparent'
+          className='flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <div className='flex items-center'>
           <input
@@ -142,7 +142,7 @@ export default function SearchBar() {
             placeholder='Start Date'
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className='border-0 w-4/12 h-full text-black bg-transparent'
+            className='border-0 w-5/12 h-full text-black bg-transparent focus:outline-none'
             style={{ lineHeight: "normal", verticalAlign: "middle" }}
           />
           <span className='px-4 bg-white text-black'>—</span>
@@ -151,14 +151,14 @@ export default function SearchBar() {
             placeholder='End Date'
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className='border-0 w-4/12 h-full text-black bg-transparent'
+            className='border-0 w-5/12 h-full text-black bg-transparent focus:outline-none'
             style={{ lineHeight: "normal", verticalAlign: "middle" }}
           />
         </div>
         <select
           value={classOfService}
           onChange={(e) => setClassOfService(e.target.value)}
-          className='border-0 flex-grow h-full text-black p-4 bg-transparent'
+          className='border-0 flex-grow h-full text-black p-4 bg-transparent focus:outline-none'
         >
           <option value='ECONOMY'>Economy</option>
           <option value='PREMIUM_ECONOMY'>Premium Economy</option>
@@ -171,7 +171,7 @@ export default function SearchBar() {
           value={numAdults}
           onChange={(e) => setNumAdults(Number(e.target.value))}
           min={1}
-          className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent'
+          className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <button
           className='bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0'

@@ -18,11 +18,11 @@ const Home: React.FC = () => {
         style={{ height: "400px" }}
       >
         <img
-          src='https://i.imgur.com/ddHANjb.png'
-          className='w-full h-full object-cover object-[20%_30%]'
+          src='https://i.imgur.com/8HMwWEJ.jpeg'
+          className='w-full h-full object-cover object-[20%_75%]'
           alt='Fixed Height Image'
         />
-        <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white whitespace-nowrap text-xl sm:text-3xl font-medium'>
+        <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white whitespace-nowrap text-xl sm:text-3xl font-medium text-outline-emerald'>
           Find the best flight for the right price
         </h1>
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4'>
