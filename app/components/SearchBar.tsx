@@ -77,12 +77,24 @@ export default function SearchBar() {
           },
         }
       );
+
       console.log("API Response:", response.data);
-      const airportCode = response.data.data[0].airportCode || "";
-      cache[city] = airportCode;
-      setAirportCode(airportCode);
-      setCity(`${city} (${airportCode})`);
-      console.log(`Fetched Airport Code for ${city}:`, airportCode);
+
+      if (
+        response.data &&
+        response.data.data &&
+        Array.isArray(response.data.data) &&
+        response.data.data.length > 0
+      ) {
+        const airportCode = response.data.data[0].airportCode || "";
+        cache[city] = airportCode;
+        setAirportCode(airportCode);
+        setCity(`${city} (${airportCode})`);
+        console.log(`Fetched Airport Code for ${city}:`, airportCode);
+      } else {
+        console.error("No airport code found in the API response.");
+        alert("No airport code found for the specified city.");
+      }
     } catch (error) {
       console.error("Error fetching airport code:", error);
       alert("Failed to fetch airport code. Please check the city name.");
@@ -122,38 +134,85 @@ export default function SearchBar() {
   return (
     <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
       <div className='flex justify-center space-x-4 mb-4'>
-        <button
-          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
-            tripType === "Round Trip"
-              ? "bg-emerald-500 text-white"
-              : "bg-white text-black"
-          }`}
-          onClick={() => setTripType("Round Trip")}
-        >
-          Round Trip
-        </button>
-        <button
-          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
-            tripType === "One-way"
-              ? "bg-emerald-500 text-white"
-              : "bg-white text-black"
-          }`}
-          onClick={() => setTripType("One-way")}
-        >
-          One-way
-        </button>
-        <button
-          className={`border-emerald-600 border-2 py-2 px-4 rounded-lg font-medium ${
-            tripType === "Multi-city"
-              ? "bg-emerald-500 text-white"
-              : "bg-white text-black"
-          }`}
-          onClick={() => setTripType("Multi-city")}
-        >
-          Multi-city
-        </button>
+        <div className='flex space-x-2'>
+          <button
+            onClick={() => setTripType("Round Trip")}
+            className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
+              tripType === "Round Trip"
+                ? "bg-emerald-600 text-white"
+                : "bg-white text-emerald-600"
+            }`}
+          >
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "Round Trip"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "Round Trip"
+                  ? "text-white"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Round Trip
+            </span>
+          </button>
+
+          <button
+            onClick={() => setTripType("One-way")}
+            className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
+              tripType === "One-way"
+                ? "bg-emerald-600 text-white"
+                : "bg-white text-emerald-600"
+            }`}
+          >
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "One-way"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "One-way" ? "text-white" : "group-hover:text-white"
+              }`}
+            >
+              One-way
+            </span>
+          </button>
+
+          <button
+            onClick={() => setTripType("Multi-city")}
+            className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
+              tripType === "Multi-city"
+                ? "bg-emerald-600 text-white"
+                : "bg-white text-emerald-600"
+            }`}
+          >
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "Multi-city"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "Multi-city"
+                  ? "text-white"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Multi-city
+            </span>
+          </button>
+        </div>
       </div>
-      <div className='flex flex-row w-full bg-white rounded-3xl overflow-hidden border-emerald-600 border'>
+      <div className='drop-shadow-md flex flex-row w-full bg-white rounded-3xl overflow-hidden border-emerald-600 border'>
         <input
           type='text'
           placeholder='From (City)'
@@ -206,7 +265,7 @@ export default function SearchBar() {
           className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <button
-          className='bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0 hover:bg-emerald-400'
+          className='text-lg font-medium bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0 hover:bg-emerald-500'
           onClick={handleSearch}
         >
           Search

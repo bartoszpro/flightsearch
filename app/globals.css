@@ -17,8 +17,12 @@
     text-wrap: balance;
   }
 
-  .text-outline-emerald {
+  .text-outline-emerald-reg {
     text-shadow: -2px -2px 0 #059669, 2px -2px 0 #059669, -2px 2px 0 #059669, 2px 2px 0 #059669;
+  }
+
+  .text-outline-emerald-mob {
+    text-shadow: -1px -1px 0 #059669, 1px -1px 0 #059669, -1px 1px 0 #059669, 1px 1px 0 #059669;
   }
 }
 
