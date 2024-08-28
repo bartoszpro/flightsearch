@@ -4,32 +4,37 @@ const PopularDestinationsGrid: React.FC = () => {
   const destinations = [
     {
       city: "Miami",
-      price: "$74",
+      price: "$107",
       image: "https://www.triptipedia.com/tip/img/FenEayqS9.jpg",
+      link: "/pages/results?source=JFK&destination=MIA&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip",
     },
     {
       city: "Dallas",
-      price: "$122",
+      price: "$154",
       image:
         "https://www.parker.edu/wp-content/uploads/2022/04/iStock-1286951857.jpg",
+      link: "/pages/results?source=JFK&destination=DAL&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip",
     },
     {
       city: "Las Vegas",
-      price: "$136",
+      price: "$135",
       image:
         "https://greennv.com/wp-content/uploads/2021/07/Cannabis-Tourism-in-Las-Vegas.jpeg",
+      link: "/pages/results?source=EWR&destination=LAS&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip",
     },
     {
       city: "London",
-      price: "$609",
+      price: "$598",
       image:
         "https://www.planetware.com/wpimages/2023/01/england-london-top-attractions-things-to-do-intro-paragraph-big-ben-thames-bridge.jpg",
+      link: "/pages/results?source=JFK&destination=LHR&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip",
     },
     {
       city: "Sydney",
-      price: "$1,268",
+      price: "$1,539",
       image:
         "https://media2.thrillophilia.com/images/photos/000/110/418/original/1606295412_shutterstock_1025960785.jpg?width=975&height=600",
+      link: "/pages/results?source=JFK&destination=SYD&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip",
     },
   ];
 
@@ -41,7 +46,11 @@ const PopularDestinationsGrid: React.FC = () => {
       </p>
       <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4'>
         {destinations.map((destination, index) => (
-          <a href='#' key={index} className='block overflow-hidden group'>
+          <a
+            href={destination.link}
+            key={index}
+            className='block overflow-hidden group'
+          >
             <div className='group-hover:underline'>
               <img
                 src={destination.image}

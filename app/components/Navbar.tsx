@@ -15,6 +15,29 @@ export default function Navbar() {
     setCurrency(event.target.value);
   };
 
+  const randomAirportCodes = [
+    "LHR", // London Heathrow
+    "CDG", // Paris Charles de Gaulle
+    "HND", // Tokyo Haneda
+    "SYD", // Sydney
+    "DXB", // Dubai
+    "JNB", // Johannesburg
+    "FRA", // Frankfurt
+    "SIN", // Singapore Changi
+    "AMS", // Amsterdam Schiphol
+    "GRU", // São Paulo-Guarulhos
+    "WAW", // Warsaw Chopin
+    "PEK", //Beijing Capital
+    "ICN", //Incheon
+    "BKK", //Suvarnabhumi
+  ];
+
+  const getRandomLink = () => {
+    const randomIndex = Math.floor(Math.random() * randomAirportCodes.length);
+    const randomDestination = randomAirportCodes[randomIndex];
+    return `/pages/results?source=JFK&destination=${randomDestination}&startDate=2024-09-15&endDate=2024-09-21&classOfService=ECONOMY&numAdults=1&tripType=Round%20Trip`;
+  };
+
   return (
     <header className='text-black drop-shadow-sm'>
       <div className='container mx-auto max-w-screen-xl flex justify-between items-center p-4'>
@@ -48,7 +71,7 @@ export default function Navbar() {
             <a href='/' className='hover:text-emerald-600'>
               Flights
             </a>
-            <a href='#' className='hover:text-emerald-600'>
+            <a href={getRandomLink()} className='hover:text-emerald-600'>
               Discover
             </a>
             <a href='#' className='hover:text-emerald-600'>
@@ -104,7 +127,7 @@ export default function Navbar() {
             <a href='#' className='hover:text-gray-200'>
               Flights
             </a>
-            <a href='#' className='hover:text-gray-200'>
+            <a href={getRandomLink()} className='hover:text-gray-200'>
               Discover
             </a>
             <a href='#' className='hover:text-gray-200'>

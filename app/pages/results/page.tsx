@@ -114,9 +114,7 @@ export default function Results() {
         console.log("API Response:", response.data);
 
         const allFlights = response.data?.data?.flights || [];
-        const validFlights = allFlights.filter((flight: FlightData) =>
-          flight.purchaseLinks?.some((link) => link.totalPrice > 0)
-        );
+        const validFlights = allFlights;
 
         if (validFlights.length > 0) {
           flightCache[cacheKey] = validFlights;
@@ -164,8 +162,11 @@ export default function Results() {
     <>
       <Navbar />
       {isLoading ? (
-        <div className='mt-4 flex justify-center'>
-          <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-emerald-600'></div>
+        <div className='mt-44 flex flex-col justify-center items-center'>
+          <p className='font-medium mb-8 text-emerald-600 animate-pulse'>
+            Getting you the best deal...
+          </p>
+          <div className='mb-12 animate-spin rounded-full h-12 w-12 border-t-4 border-emerald-500'></div>
         </div>
       ) : errorMessage ? (
         <div className='mt-4 text-red-500'>{errorMessage}</div>
