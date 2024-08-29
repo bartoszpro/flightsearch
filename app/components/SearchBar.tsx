@@ -68,7 +68,7 @@ export default function SearchBar() {
       const filteredSuggestions = airports.filter(
         (airport) =>
           airport.city &&
-          airport.city.toLowerCase().includes(query.toLowerCase())
+          String(airport.city).toLowerCase().includes(query.toLowerCase())
       );
       setSourceSuggestions(filteredSuggestions);
     } else {
@@ -86,7 +86,7 @@ export default function SearchBar() {
       const filteredSuggestions = airports.filter(
         (airport) =>
           airport.city &&
-          airport.city.toLowerCase().includes(query.toLowerCase())
+          String(airport.city).toLowerCase().includes(query.toLowerCase())
       );
       setDestinationSuggestions(filteredSuggestions);
     } else {
