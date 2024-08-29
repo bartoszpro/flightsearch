@@ -73,6 +73,7 @@ function ResultsContent() {
   const endDate = searchParams.get("endDate");
   const classOfService = searchParams.get("classOfService");
   const numAdults = parseInt(searchParams.get("numAdults") || "1", 10);
+  const tripType = searchParams.get("tripType");
 
   const [flights, setFlights] = useState<FlightData[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -80,7 +81,7 @@ function ResultsContent() {
 
   useEffect(() => {
     const searchFlights = async () => {
-      const cacheKey = `${source}-${destination}-${startDate}-${endDate}-${classOfService}-${numAdults}`;
+      const cacheKey = `${source}-${destination}-${startDate}-${endDate}-${classOfService}-${numAdults}-${tripType}`;
 
       if (flightCache[cacheKey]) {
         console.log("Using cached data for flights.");
@@ -96,11 +97,11 @@ function ResultsContent() {
           params: {
             sourceAirportCode: source,
             destinationAirportCode: destination,
-            itineraryType: "ROUND_TRIP",
+            itineraryType: tripType === "RoundTrip" ? "ROUND_TRIP" : "ONE_WAY",
             numAdults: numAdults.toString(),
             classOfService: classOfService,
             date: startDate,
-            returnDate: endDate,
+            returnDate: tripType === "RoundTrip" ? endDate : undefined,
           },
           headers: {
             "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
@@ -145,16 +146,24 @@ function ResultsContent() {
       source &&
       destination &&
       startDate &&
-      endDate &&
       classOfService &&
-      numAdults
+      numAdults &&
+      (tripType !== "RoundTrip" || (tripType === "RoundTrip" && endDate))
     ) {
       searchFlights();
     } else {
       setErrorMessage("Missing required parameters.");
       setIsLoading(false);
     }
-  }, [source, destination, startDate, endDate, classOfService, numAdults]);
+  }, [
+    source,
+    destination,
+    startDate,
+    endDate,
+    classOfService,
+    numAdults,
+    tripType,
+  ]);
 
   return (
     <>

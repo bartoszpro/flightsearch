@@ -6,7 +6,6 @@ import axios from "axios";
 interface FlightData {
   status: boolean;
   message: string;
-  // Define other expected fields here
 }
 
 export default function MultiCityResults() {

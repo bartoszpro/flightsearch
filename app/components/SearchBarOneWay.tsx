@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 export default function SearchBarOneWay() {
   const router = useRouter();
   const [startDate, setStartDate] = useState<string>("2024-09-15");
-  const [endDate, setEndDate] = useState<string>("2024-09-21");
   const [sourceCity, setSourceCity] = useState<string>("");
   const [destinationCity, setDestinationCity] = useState<string>("");
   const [tripType, setTripType] = useState<string>("One-way");
@@ -30,7 +29,7 @@ export default function SearchBarOneWay() {
     console.log("Destination Airport Code:", destinationAirportCode);
 
     if (
-      !validateDates(startDate, endDate) ||
+      !validateDates(startDate) ||
       !sourceAirportCode ||
       !destinationAirportCode
     ) {
@@ -41,21 +40,15 @@ export default function SearchBarOneWay() {
     }
 
     const formattedStartDate = dayjs(startDate).format("YYYY-MM-DD");
-    const formattedEndDate = dayjs(endDate).format("YYYY-MM-DD");
-    const query = `?source=${sourceAirportCode}&destination=${destinationAirportCode}&startDate=${formattedStartDate}&endDate=${formattedEndDate}&classOfService=${classOfService}&numAdults=${numAdults}&tripType=${tripType}`;
+    const query = `?source=${sourceAirportCode}&destination=${destinationAirportCode}&startDate=${formattedStartDate}&classOfService=${classOfService}&numAdults=${numAdults}&tripType=${tripType}`;
     router.push(`/pages/results${query}`);
   };
 
-  const validateDates = (start: string, end: string): boolean => {
+  const validateDates = (start: string): boolean => {
     const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
     const today = new Date();
 
-    return !(
-      startDateObj < today ||
-      endDateObj < today ||
-      startDateObj > endDateObj
-    );
+    return !(startDateObj < today);
   };
 
   const handleSourceCityChange = (
