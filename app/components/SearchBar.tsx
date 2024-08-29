@@ -106,7 +106,22 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            Round Trip
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "Round Trip"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "Round Trip"
+                  ? "text-white"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Round Trip
+            </span>
           </button>
 
           <button
@@ -117,7 +132,20 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            One-way
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "One-way"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "One-way" ? "text-white" : "group-hover:text-white"
+              }`}
+            >
+              One-way
+            </span>
           </button>
 
           <button
@@ -128,7 +156,22 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            Multi-city
+            <span
+              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
+                tripType === "Multi-city"
+                  ? "bg-emerald-500 opacity-90"
+                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
+              }`}
+            ></span>
+            <span
+              className={`relative ${
+                tripType === "Multi-city"
+                  ? "text-white"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Multi-city
+            </span>
           </button>
         </div>
       </div>
