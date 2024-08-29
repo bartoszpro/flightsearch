@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { airports } from "../data/airports";
-
+import { IoSearchOutline } from "react-icons/io5";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [currency, setCurrency] = useState<string>("USD");
@@ -25,11 +25,19 @@ export default function Navbar() {
     setQuery(query);
 
     if (query.length > 0) {
-      const filteredSuggestions = airports.filter(
-        (airport) =>
-          airport.city &&
-          airport.city.toLowerCase().includes(query.toLowerCase())
-      );
+      const filteredSuggestions = airports
+        .filter(
+          (airport) =>
+            airport.city &&
+            airport.country &&
+            airport.city.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((airport) => ({
+          city: airport.city as string,
+          code: airport.code as string,
+          country: airport.country as string,
+        }));
+
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
@@ -82,13 +90,16 @@ export default function Navbar() {
 
         <div className='flex-1 flex justify-center items-center space-x-2 sm:space sm:space-x-6 mx-6'>
           <div className='relative flex-grow max-w-xs sm:max-w-lg'>
-            <input
-              type='text'
-              value={query}
-              onChange={handleSearchChange}
-              placeholder='Search'
-              className='border w-full min-w-[120px] sm:min-w-[200px] px-4 sm:px-7 py-2 rounded-3xl text-black focus:outline-emerald-600 relative z-[9999]'
-            />
+            <div className='flex items-center border w-full min-w-[120px] sm:min-w-[200px] px-4 py-2 rounded-3xl text-black focus-within:outline-emerald-600 relative z-[9999]'>
+              <IoSearchOutline className='text-gray-400 mr-3' />
+              <input
+                type='text'
+                value={query}
+                onChange={handleSearchChange}
+                placeholder='Search'
+                className='w-full bg-transparent focus:outline-none'
+              />
+            </div>
             {suggestions.length > 0 && (
               <div className='absolute bg-white border mt-1 rounded-md shadow-lg w-full max-h-60 overflow-y-auto z-[9999]'>
                 {suggestions.map((suggestion, index) => (

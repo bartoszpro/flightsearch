@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { airports } from "../data/airports";
 import axios from "axios";
 import dayjs from "dayjs";
-
-const cache: { [key: string]: string } = {};
 
 export default function SearchBar() {
   const router = useRouter();
@@ -13,12 +12,18 @@ export default function SearchBar() {
   const [endDate, setEndDate] = useState<string>("2024-09-21");
   const [sourceCity, setSourceCity] = useState<string>("");
   const [destinationCity, setDestinationCity] = useState<string>("");
+  const [tripType, setTripType] = useState<string>("Round Trip");
   const [sourceAirportCode, setSourceAirportCode] = useState<string>("");
   const [destinationAirportCode, setDestinationAirportCode] =
     useState<string>("");
   const [classOfService, setClassOfService] = useState<string>("ECONOMY");
+  const [sourceSuggestions, setSourceSuggestions] = useState<
+    { city: string; code: string; country: string }[]
+  >([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState<
+    { city: string; code: string; country: string }[]
+  >([]);
   const [numAdults, setNumAdults] = useState<number>(1);
-  const [tripType, setTripType] = useState<string>("Round Trip");
 
   const handleSearch = () => {
     console.log("Source Airport Code:", sourceAirportCode);
@@ -53,86 +58,44 @@ export default function SearchBar() {
     );
   };
 
-  const fetchAirportCode = async (
-    city: string,
-    setAirportCode: (code: string) => void,
-    setCity: (cityWithCode: string) => void
+  const handleSourceCityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (cache[city]) {
-      const cachedCode = cache[city];
-      setAirportCode(cachedCode);
-      setCity(`${city} (${cachedCode})`);
-      console.log(`Used cached Airport Code for ${city}:`, cachedCode);
-      return;
-    }
+    const query = event.target.value;
+    setSourceCity(query);
 
-    try {
-      const response = await axios.get(
-        "https://tripadvisor16.p.rapidapi.com/api/v1/flights/searchAirport",
-        {
-          params: { query: city },
-          headers: {
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
-            "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
-          },
-        }
+    if (query.length > 0) {
+      const filteredSuggestions = airports.filter(
+        (airport) =>
+          airport.city &&
+          airport.city.toLowerCase().includes(query.toLowerCase())
       );
-
-      console.log("API Response:", response.data);
-
-      if (
-        response.data &&
-        response.data.data &&
-        Array.isArray(response.data.data) &&
-        response.data.data.length > 0
-      ) {
-        const airportCode = response.data.data[0].airportCode || "";
-        cache[city] = airportCode;
-        setAirportCode(airportCode);
-        setCity(`${city} (${airportCode})`);
-        console.log(`Fetched Airport Code for ${city}:`, airportCode);
-      } else {
-        console.error("No airport code found in the API response.");
-        alert("No airport code found for the specified city.");
-      }
-    } catch (error) {
-      console.error("Error fetching airport code:", error);
-      alert("Failed to fetch airport code. Please check the city name.");
+      setSourceSuggestions(filteredSuggestions);
+    } else {
+      setSourceSuggestions([]);
     }
   };
 
-  useEffect(() => {
-    if (sourceCity) {
-      const debounceTimeout = setTimeout(
-        () =>
-          fetchAirportCode(
-            sourceCity.split(" (")[0],
-            setSourceAirportCode,
-            setSourceCity
-          ),
-        500
-      );
-      return () => clearTimeout(debounceTimeout);
-    }
-  }, [sourceCity]);
+  const handleDestinationCityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const query = event.target.value;
+    setDestinationCity(query);
 
-  useEffect(() => {
-    if (destinationCity) {
-      const debounceTimeout = setTimeout(
-        () =>
-          fetchAirportCode(
-            destinationCity.split(" (")[0],
-            setDestinationAirportCode,
-            setDestinationCity
-          ),
-        500
+    if (query.length > 0) {
+      const filteredSuggestions = airports.filter(
+        (airport) =>
+          airport.city &&
+          airport.city.toLowerCase().includes(query.toLowerCase())
       );
-      return () => clearTimeout(debounceTimeout);
+      setDestinationSuggestions(filteredSuggestions);
+    } else {
+      setDestinationSuggestions([]);
     }
-  }, [destinationCity]);
+  };
 
   return (
-    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto'>
+    <div className='max-w-screen-xl w-full px-4 sm:px-8 mx-auto z-50'>
       <div className='flex justify-center space-x-4 mb-4'>
         <div className='flex space-x-2'>
           <button
@@ -143,22 +106,7 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            <span
-              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
-                tripType === "Round Trip"
-                  ? "bg-emerald-500 opacity-90"
-                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
-              }`}
-            ></span>
-            <span
-              className={`relative ${
-                tripType === "Round Trip"
-                  ? "text-white"
-                  : "group-hover:text-white"
-              }`}
-            >
-              Round Trip
-            </span>
+            Round Trip
           </button>
 
           <button
@@ -169,20 +117,7 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            <span
-              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
-                tripType === "One-way"
-                  ? "bg-emerald-500 opacity-90"
-                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
-              }`}
-            ></span>
-            <span
-              className={`relative ${
-                tripType === "One-way" ? "text-white" : "group-hover:text-white"
-              }`}
-            >
-              One-way
-            </span>
+            One-way
           </button>
 
           <button
@@ -193,40 +128,73 @@ export default function SearchBar() {
                 : "bg-white text-emerald-600"
             }`}
           >
-            <span
-              className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
-                tripType === "Multi-city"
-                  ? "bg-emerald-500 opacity-90"
-                  : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
-              }`}
-            ></span>
-            <span
-              className={`relative ${
-                tripType === "Multi-city"
-                  ? "text-white"
-                  : "group-hover:text-white"
-              }`}
-            >
-              Multi-city
-            </span>
+            Multi-city
           </button>
         </div>
       </div>
-      <div className='drop-shadow-md flex flex-row w-full bg-white rounded-3xl overflow-hidden border-emerald-600 border'>
-        <input
-          type='text'
-          placeholder='From (City)'
-          value={sourceCity}
-          onChange={(e) => setSourceCity(e.target.value)}
-          className='flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
-        />
-        <input
-          type='text'
-          placeholder='To (City)'
-          value={destinationCity}
-          onChange={(e) => setDestinationCity(e.target.value)}
-          className='flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
-        />
+      <div className='relative drop-shadow-md flex flex-row w-full bg-white  overflow-visible border-emerald-600 border rounded-3xl'>
+        <div className='relative flex-grow w-1/2'>
+          <input
+            type='text'
+            placeholder='From (City)'
+            value={sourceCity}
+            onChange={handleSourceCityChange}
+            className='flex-grow w-full h-full text-black p-4 bg-transparent focus:outline-none'
+          />
+          {sourceSuggestions.length > 0 && (
+            <div
+              className='absolute left-0 bg-white border mt-1 rounded-md shadow-lg w-full max-h-60 overflow-y-auto z-50'
+              style={{ zIndex: 1000 }}
+            >
+              {sourceSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className='p-2 hover:bg-emerald-100 cursor-pointer'
+                  onClick={() => {
+                    setSourceCity(
+                      `${suggestion.city}, ${suggestion.country} (${suggestion.code})`
+                    );
+                    setSourceAirportCode(suggestion.code);
+                    setSourceSuggestions([]);
+                  }}
+                >
+                  {suggestion.city}, {suggestion.country} ({suggestion.code})
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className='relative flex-grow w-1/2'>
+          <input
+            type='text'
+            placeholder='To (City)'
+            value={destinationCity}
+            onChange={handleDestinationCityChange}
+            className='flex-grow w-full h-full text-black p-4 bg-transparent focus:outline-none'
+          />
+          {destinationSuggestions.length > 0 && (
+            <div
+              className='absolute left-0 bg-white border mt-1 rounded-md shadow-lg w-full max-h-60 overflow-y-auto z-50'
+              style={{ zIndex: 1000 }}
+            >
+              {destinationSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className='p-2 hover:bg-emerald-100 cursor-pointer'
+                  onClick={() => {
+                    setDestinationCity(
+                      `${suggestion.city}, ${suggestion.country} (${suggestion.code})`
+                    );
+                    setDestinationAirportCode(suggestion.code);
+                    setDestinationSuggestions([]);
+                  }}
+                >
+                  {suggestion.city}, {suggestion.country} ({suggestion.code})
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         <div className='flex items-center'>
           <input
             type='date'
@@ -262,10 +230,10 @@ export default function SearchBar() {
           value={numAdults}
           onChange={(e) => setNumAdults(Number(e.target.value))}
           min={1}
-          className='border-0 flex-grow w-1/2 h-full text-black p-4 bg-transparent focus:outline-none'
+          className='border-0 flex-grow w-1/3 h-full text-black p-4 bg-transparent focus:outline-none'
         />
         <button
-          className='text-lg font-medium bg-emerald-600 text-white h-full p-4 flex-grow-0 flex-shrink-0 hover:bg-emerald-500'
+          className='text-lg font-medium bg-emerald-600 text-white h-full w-auto py-4 px-3 flex-grow-0 flex-shrink-0 hover:bg-emerald-500 rounded-r-3xl'
           onClick={handleSearch}
         >
           Search
