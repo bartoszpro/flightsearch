@@ -65,11 +65,19 @@ export default function SearchBar() {
     setSourceCity(query);
 
     if (query.length > 0) {
-      const filteredSuggestions = airports.filter(
-        (airport) =>
-          airport.city &&
-          String(airport.city).toLowerCase().includes(query.toLowerCase())
-      );
+      const filteredSuggestions = airports
+        .filter(
+          (airport) =>
+            typeof airport.city === "string" &&
+            typeof airport.country === "string" &&
+            airport.city.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((airport) => ({
+          city: airport.city as string,
+          code: airport.code as string,
+          country: airport.country as string,
+        }));
+
       setSourceSuggestions(filteredSuggestions);
     } else {
       setSourceSuggestions([]);
@@ -83,11 +91,19 @@ export default function SearchBar() {
     setDestinationCity(query);
 
     if (query.length > 0) {
-      const filteredSuggestions = airports.filter(
-        (airport) =>
-          airport.city &&
-          String(airport.city).toLowerCase().includes(query.toLowerCase())
-      );
+      const filteredSuggestions = airports
+        .filter(
+          (airport) =>
+            typeof airport.city === "string" &&
+            typeof airport.country === "string" &&
+            airport.city.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((airport) => ({
+          city: airport.city as string,
+          code: airport.code as string,
+          country: airport.country as string,
+        }));
+
       setDestinationSuggestions(filteredSuggestions);
     } else {
       setDestinationSuggestions([]);

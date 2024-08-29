@@ -30,6 +30,7 @@ export default function Navbar() {
           (airport) =>
             airport.city &&
             airport.country &&
+            typeof airport.city === "string" &&
             airport.city.toLowerCase().includes(query.toLowerCase())
         )
         .map((airport) => ({
