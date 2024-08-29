@@ -13,6 +13,7 @@ import SearchBarMultiCity from "./components/SearchBarMultiCity";
 
 const Home: React.FC = () => {
   const [tripType, setTripType] = useState<string>("Round Trip");
+  const imageHeight = tripType === "Multi-city" ? "525px" : "400px";
   return (
     <>
       <Head>
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
       <Navbar />
       <div
         className='relative w-full'
-        style={{ height: "400px", overflow: "visible", zIndex: 10 }}
+        style={{ height: imageHeight, overflow: "visible", zIndex: 10 }}
       >
         <img
           src='https://images6.alphacoders.com/526/526622.jpg'
@@ -29,7 +30,7 @@ const Home: React.FC = () => {
           alt='Fixed Height Image'
           style={{ zIndex: 1 }}
         />
-        <h1 className='absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-md whitespace-nowrap text-xl sm:text-3xl text-outline-emerald-mob font-medium text-outline-emerald-reg'>
+        <h1 className='absolute top-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-md whitespace-nowrap text-xl sm:text-3xl text-outline-emerald-mob font-medium text-outline-emerald-reg'>
           Find the best flight for the right price
         </h1>
         <div

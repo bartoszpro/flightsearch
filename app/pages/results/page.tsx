@@ -103,7 +103,7 @@ function ResultsContent() {
             returnDate: endDate,
           },
           headers: {
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY!,
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
             "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
           },
         };

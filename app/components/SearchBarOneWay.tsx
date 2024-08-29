@@ -18,10 +18,10 @@ export default function SearchBarOneWay() {
     useState<string>("");
   const [classOfService, setClassOfService] = useState<string>("ECONOMY");
   const [sourceSuggestions, setSourceSuggestions] = useState<
-    { city: string; code: string; country: string }[]
+    { city: string; code: string; country: string; name: string }[]
   >([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState<
-    { city: string; code: string; country: string }[]
+    { city: string; code: string; country: string; name: string }[]
   >([]);
   const [numAdults, setNumAdults] = useState<number>(1);
 
@@ -68,11 +68,13 @@ export default function SearchBarOneWay() {
       const filteredSuggestions = airports
         .filter(
           (airport) =>
+            typeof airport.name === "string" &&
             typeof airport.city === "string" &&
             typeof airport.country === "string" &&
             airport.city.toLowerCase().includes(query.toLowerCase())
         )
         .map((airport) => ({
+          name: airport.name as string,
           city: airport.city as string,
           code: airport.code as string,
           country: airport.country as string,
@@ -94,11 +96,13 @@ export default function SearchBarOneWay() {
       const filteredSuggestions = airports
         .filter(
           (airport) =>
+            typeof airport.name === "string" &&
             typeof airport.city === "string" &&
             typeof airport.country === "string" &&
             airport.city.toLowerCase().includes(query.toLowerCase())
         )
         .map((airport) => ({
+          name: airport.name as string,
           city: airport.city as string,
           code: airport.code as string,
           country: airport.country as string,
@@ -129,7 +133,7 @@ export default function SearchBarOneWay() {
               {sourceSuggestions.map((suggestion, index) => (
                 <div
                   key={index}
-                  className='p-2 hover:bg-emerald-100 cursor-pointer'
+                  className='p-2 hover:bg-emerald-100 cursor-pointer overflow-hidden'
                   onClick={() => {
                     setSourceCity(
                       `${suggestion.city}, ${suggestion.country} (${suggestion.code})`
@@ -138,7 +142,10 @@ export default function SearchBarOneWay() {
                     setSourceSuggestions([]);
                   }}
                 >
-                  {suggestion.city}, {suggestion.country} ({suggestion.code})
+                  <div>
+                    {suggestion.city}, {suggestion.country} ({suggestion.code})
+                    <div className='text-xs'>{suggestion.name}</div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -160,7 +167,7 @@ export default function SearchBarOneWay() {
               {destinationSuggestions.map((suggestion, index) => (
                 <div
                   key={index}
-                  className='p-2 hover:bg-emerald-100 cursor-pointer'
+                  className='p-2 hover:bg-emerald-100 cursor-pointer overflow-hidden'
                   onClick={() => {
                     setDestinationCity(
                       `${suggestion.city}, ${suggestion.country} (${suggestion.code})`
@@ -169,7 +176,10 @@ export default function SearchBarOneWay() {
                     setDestinationSuggestions([]);
                   }}
                 >
-                  {suggestion.city}, {suggestion.country} ({suggestion.code})
+                  <div>
+                    {suggestion.city}, {suggestion.country} ({suggestion.code})
+                    <div className='text-xs'>{suggestion.name}</div>
+                  </div>
                 </div>
               ))}
             </div>
