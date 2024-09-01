@@ -54,7 +54,7 @@ const calculateDuration = (departure: string, arrival: string) => {
   return `${hours}h ${minutes}m`;
 };
 
-const retry = async (fn: () => Promise<any>, retries = 3, delay = 1000) => {
+const retry = async (fn: () => Promise<any>, retries = 2, delay = 500) => {
   for (let i = 0; i < retries; i++) {
     try {
       return await fn();
@@ -73,15 +73,16 @@ function ResultsContent() {
   const endDate = searchParams.get("endDate");
   const classOfService = searchParams.get("classOfService");
   const numAdults = parseInt(searchParams.get("numAdults") || "1", 10);
-  const tripType = searchParams.get("tripType");
 
   const [flights, setFlights] = useState<FlightData[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    let didCancel = false;
+
     const searchFlights = async () => {
-      const cacheKey = `${source}-${destination}-${startDate}-${endDate}-${classOfService}-${numAdults}-${tripType}`;
+      const cacheKey = `${source}-${destination}-${startDate}-${endDate}-${classOfService}-${numAdults}`;
 
       if (flightCache[cacheKey]) {
         console.log("Using cached data for flights.");
@@ -97,11 +98,11 @@ function ResultsContent() {
           params: {
             sourceAirportCode: source,
             destinationAirportCode: destination,
-            itineraryType: tripType === "RoundTrip" ? "ROUND_TRIP" : "ONE_WAY",
+            itineraryType: "ROUND_TRIP",
             numAdults: numAdults.toString(),
             classOfService: classOfService,
             date: startDate,
-            returnDate: tripType === "RoundTrip" ? endDate : undefined,
+            returnDate: endDate,
           },
           headers: {
             "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
@@ -109,36 +110,43 @@ function ResultsContent() {
           },
         };
 
-        const response = await retry(() => axios.request(options), 3, 2000);
+        const response = await retry(() => axios.request(options), 2, 500);
         console.log("API Response:", response.data);
 
         const allFlights = response.data?.data?.flights || [];
         const validFlights = allFlights;
 
-        if (validFlights.length > 0) {
-          flightCache[cacheKey] = validFlights;
-          setFlights(validFlights);
-        } else {
-          setErrorMessage(
-            "No flights found with valid pricing for the given criteria."
-          );
+        if (!didCancel) {
+          if (validFlights.length > 0) {
+            flightCache[cacheKey] = validFlights;
+            setFlights(validFlights);
+            setErrorMessage("");
+          } else {
+            setErrorMessage(
+              "No flights found with valid pricing for the given criteria."
+            );
+          }
         }
       } catch (error) {
-        console.error("Error fetching flights:", error);
+        if (!didCancel) {
+          console.error("Error fetching flights:", error);
 
-        if (error instanceof AxiosError) {
-          setErrorMessage(
-            `Failed to fetch flights: ${
-              error.response?.data?.message || error.message
-            }`
-          );
-        } else if (error instanceof Error) {
-          setErrorMessage(`Failed to fetch flights: ${error.message}`);
-        } else {
-          setErrorMessage("An unknown error occurred while fetching flights.");
+          if (error instanceof AxiosError) {
+            setErrorMessage(
+              `Failed to fetch flights: ${
+                error.response?.data?.message || error.message
+              }`
+            );
+          } else if (error instanceof Error) {
+            setErrorMessage(`Failed to fetch flights: ${error.message}`);
+          } else {
+            setErrorMessage(
+              "An unknown error occurred while fetching flights."
+            );
+          }
         }
       } finally {
-        setIsLoading(false);
+        if (!didCancel) setIsLoading(false);
       }
     };
 
@@ -146,24 +154,20 @@ function ResultsContent() {
       source &&
       destination &&
       startDate &&
+      endDate &&
       classOfService &&
-      numAdults &&
-      (tripType !== "RoundTrip" || (tripType === "RoundTrip" && endDate))
+      numAdults
     ) {
       searchFlights();
     } else {
       setErrorMessage("Missing required parameters.");
       setIsLoading(false);
     }
-  }, [
-    source,
-    destination,
-    startDate,
-    endDate,
-    classOfService,
-    numAdults,
-    tripType,
-  ]);
+
+    return () => {
+      didCancel = true;
+    };
+  }, [source, destination, startDate, endDate, classOfService, numAdults]);
 
   return (
     <>
@@ -171,12 +175,17 @@ function ResultsContent() {
       {isLoading ? (
         <div className='mt-44 flex flex-col justify-center items-center'>
           <p className='font-medium mb-8 text-emerald-600 animate-pulse'>
-            Getting you the best deal...
+            {errorMessage || "Getting you the best deal..."}
           </p>
           <div className='mb-12 animate-spin rounded-full h-12 w-12 border-t-4 border-emerald-500'></div>
         </div>
       ) : errorMessage ? (
-        <div className='mt-4 text-red-500'>{errorMessage}</div>
+        <div className='font-medium mb-8 flex flex-col items-center mt-44 text-rose-500'>
+          <p className='text-lg font-medium text-emerald-500'>
+            Please refresh and try again.
+          </p>
+          {errorMessage}
+        </div>
       ) : flights.length === 0 ? (
         <div className='mt-4 text-red-500'>
           No flights found for the given criteria.
@@ -196,103 +205,96 @@ function ResultsContent() {
                 {flight.segments &&
                 flight.segments.length > 0 &&
                 flight.segments[0].legs ? (
-                  <>
-                    <div>
-                      <h2 className='font-medium text-lg'>Outbound Flight</h2>
-                      <p className='text-gray-600'>
-                        Date:{" "}
-                        {formatDate(
-                          flight.segments[0].legs[0].departureDateTime
-                        )}
-                      </p>
-                      {flight.segments[0].legs.map((leg, legIndex) => (
-                        <div
-                          key={legIndex}
-                          className='flex justify-between items-center mb-4'
-                        >
-                          <div className='flex items-center'>
-                            <img
-                              src={leg.operatingCarrier?.logoUrl}
-                              alt={leg.operatingCarrier?.displayName}
-                              className='w-10 h-10 mr-4'
-                            />
-                            <div>
-                              <p className='text-md'>
-                                {formatTime(leg.departureDateTime)} -{" "}
-                                {formatTime(leg.arrivalDateTime)}
-                              </p>
-                              <p className='text-gray-600'>
-                                {leg.originStationCode} -{" "}
-                                {leg.destinationStationCode},{" "}
-                                {leg.operatingCarrier.displayName}
-                              </p>
-                            </div>
-                          </div>
-                          <div className='text-right'>
-                            <p className='text-gray-600'>
-                              {calculateDuration(
-                                leg.departureDateTime,
-                                leg.arrivalDateTime
-                              )}
+                  <div>
+                    <h2 className='font-medium text-lg'>Outbound Flight</h2>
+                    <p className='text-gray-600'>
+                      Date:{" "}
+                      {formatDate(flight.segments[0].legs[0].departureDateTime)}
+                    </p>
+                    {flight.segments[0].legs.map((leg, legIndex) => (
+                      <div
+                        key={legIndex}
+                        className='flex justify-between items-center mb-4'
+                      >
+                        <div className='flex items-center'>
+                          <img
+                            src={leg.operatingCarrier?.logoUrl}
+                            alt={leg.operatingCarrier?.displayName}
+                            className='w-10 h-10 mr-4'
+                          />
+                          <div>
+                            <p className='text-md'>
+                              {formatTime(leg.departureDateTime)} -{" "}
+                              {formatTime(leg.arrivalDateTime)}
                             </p>
-                            <p className='text-gray-600'>Nonstop</p>
+                            <p className='text-gray-600'>
+                              {leg.originStationCode} -{" "}
+                              {leg.destinationStationCode},{" "}
+                              {leg.operatingCarrier.displayName}
+                            </p>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                    {flight.segments[1] && flight.segments[1].legs ? (
-                      <div className='border-t pt-3'>
-                        <h2 className='font-medium text-lg'>Return Flight</h2>
-                        <p className='text-gray-600'>
-                          Date:{" "}
-                          {formatDate(
-                            flight.segments[1].legs[0].departureDateTime
-                          )}
-                        </p>
-                        {flight.segments[1].legs.map((leg, legIndex) => (
-                          <div
-                            key={legIndex}
-                            className='flex justify-between items-center mb-4'
-                          >
-                            <div className='flex items-center'>
-                              <img
-                                src={leg.operatingCarrier?.logoUrl}
-                                alt={leg.operatingCarrier?.displayName}
-                                className='w-10 h-10 mr-4'
-                              />
-                              <div>
-                                <p className='text-md'>
-                                  {formatTime(leg.departureDateTime)} -{" "}
-                                  {formatTime(leg.arrivalDateTime)}
-                                </p>
-                                <p className='text-gray-600'>
-                                  {leg.originStationCode} -{" "}
-                                  {leg.destinationStationCode},{" "}
-                                  {leg.operatingCarrier.displayName}
-                                </p>
-                              </div>
-                            </div>
-                            <div className='text-right'>
-                              <p className='text-gray-600'>
-                                {calculateDuration(
-                                  leg.departureDateTime,
-                                  leg.arrivalDateTime
-                                )}
-                              </p>
-                              <p className='text-gray-600'>Nonstop</p>
-                            </div>
-                          </div>
-                        ))}
+                        <div className='text-right'>
+                          <p className='text-gray-600'>
+                            {calculateDuration(
+                              leg.departureDateTime,
+                              leg.arrivalDateTime
+                            )}
+                          </p>
+                          <p className='text-gray-600'>Nonstop</p>
+                        </div>
                       </div>
-                    ) : (
-                      <div>
-                        No return flight data available for this flight.
-                      </div>
-                    )}
-                  </>
+                    ))}
+                  </div>
                 ) : (
                   <div>No leg data available for this flight.</div>
                 )}
+                {flight.segments[1] && flight.segments[1].legs ? (
+                  <div className='border-t pt-3'>
+                    <h2 className='font-medium text-lg'>Return Flight</h2>
+                    <p className='text-gray-600'>
+                      Date:{" "}
+                      {formatDate(flight.segments[1].legs[0].departureDateTime)}
+                    </p>
+                    {flight.segments[1].legs.map((leg, legIndex) => (
+                      <div
+                        key={legIndex}
+                        className='flex justify-between items-center mb-4'
+                      >
+                        <div className='flex items-center'>
+                          <img
+                            src={leg.operatingCarrier?.logoUrl}
+                            alt={leg.operatingCarrier?.displayName}
+                            className='w-10 h-10 mr-4'
+                          />
+                          <div>
+                            <p className='text-md'>
+                              {formatTime(leg.departureDateTime)} -{" "}
+                              {formatTime(leg.arrivalDateTime)}
+                            </p>
+                            <p className='text-gray-600'>
+                              {leg.originStationCode} -{" "}
+                              {leg.destinationStationCode},{" "}
+                              {leg.operatingCarrier.displayName}
+                            </p>
+                          </div>
+                        </div>
+                        <div className='text-right'>
+                          <p className='text-gray-600'>
+                            {calculateDuration(
+                              leg.departureDateTime,
+                              leg.arrivalDateTime
+                            )}
+                          </p>
+                          <p className='text-gray-600'>Nonstop</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div>No return flight data available for this flight.</div>
+                )}
+
                 {flight.purchaseLinks && flight.purchaseLinks.length > 0 ? (
                   <div className='border-t flex justify-between items-center pt-4'>
                     <div>
