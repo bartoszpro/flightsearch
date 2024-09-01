@@ -87,7 +87,7 @@ const Home: React.FC = () => {
             </span>
           </button>
 
-          <button
+          {/* <button
             onClick={() => setTripType("Multi-city")}
             className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
               tripType === "Multi-city"
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
             >
               Multi-city
             </span>
-          </button>
+          </button> */}
         </div>
 
         <div

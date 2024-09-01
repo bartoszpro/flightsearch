@@ -127,9 +127,10 @@ export default function Navbar() {
             <a href={getRandomLink()} className='hover:text-emerald-600'>
               Discover
             </a>
+            {/*
             <a href='#' className='hover:text-emerald-600 '>
               More
-            </a>
+            </a> */}
           </nav>
         </div>
 
@@ -149,15 +150,16 @@ export default function Navbar() {
               <option value='GBP'>GBP</option>
             </select>
           </div>
+          {/*
           <a
             href='#'
             className='hover:bg-emerald-500 whitespace-nowrap bg-emerald-600 p-2 rounded-3xl text-white'
           >
             Sign In
-          </a>
+          </a> */}
         </div>
 
-        <div className='lg:hidden'>
+        <div className='xl:hidden'>
           <button onClick={toggleMenu} className='focus:outline-none'>
             <svg
               className='w-6 h-6'
