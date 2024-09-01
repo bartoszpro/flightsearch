@@ -249,7 +249,9 @@ function ResultsContent() {
                 ) : (
                   <div>No leg data available for this flight.</div>
                 )}
-                {flight.segments[1] && flight.segments[1].legs ? (
+                {flight.segments &&
+                flight.segments[1] &&
+                flight.segments[1].legs ? (
                   <div className='border-t pt-3'>
                     <h2 className='font-medium text-lg'>Return Flight</h2>
                     <p className='text-gray-600'>
