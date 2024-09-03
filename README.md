@@ -22,6 +22,8 @@ FlightSearch is a web application designed to help users find the best flights a
 
 ### Deployment
 
+The FlightSearch application is deployed on Vercel. You can access the live version of the application here: https://flightsearch-bp.vercel.app
+
 ### Installation
 
 To run the FlightSearch application locally, follow these steps:
