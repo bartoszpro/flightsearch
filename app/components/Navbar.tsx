@@ -84,9 +84,7 @@ export default function Navbar() {
             />
             <span>FlightSearch</span>
           </a>
-          <p className='text-xs text-gray-600 leading-none mt-1'>
-            Powered by Tripadvisor.
-          </p>
+          <p className='text-xs text-gray-600 leading-none mt-1'></p>
         </div>
 
         <div className='flex-1 flex justify-center items-center space-x-2 sm:space sm:space-x-6 mx-6'>
@@ -146,8 +144,6 @@ export default function Navbar() {
               className='px-2 py-1 rounded-md text-black focus:outline-none focus:ring focus:ring-emerald-600'
             >
               <option value='USD'>USD</option>
-              <option value='EUR'>EUR</option>
-              <option value='GBP'>GBP</option>
             </select>
           </div>
           {/*
@@ -159,7 +155,7 @@ export default function Navbar() {
           </a> */}
         </div>
 
-        <div className='xl:hidden'>
+        <div className='lg:hidden'>
           <button onClick={toggleMenu} className='focus:outline-none'>
             <svg
               className='w-6 h-6'
@@ -202,8 +198,6 @@ export default function Navbar() {
                 className='px-2 py-1 rounded-md text-black'
               >
                 <option value='USD'>USD</option>
-                <option value='EUR'>EUR</option>
-                <option value='GBP'>GBP</option>
               </select>
             </div>
             <a href='#' className='hover:text-gray-200'>
