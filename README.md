@@ -1,10 +1,10 @@
-## Flight Search
+# Flight Search
 
 FlightSearch is a web application designed to help users find the best flights at the most competitive prices. With a clean, user-friendly interface, FlightSearch allows users to easily search for flights, view recent searches, and explore popular destinations.
 
 <img src="img.png">
 
-### Features
+## Features
 
 - Round trip, one-way, or multi-city search options
 - Search for flights by city
@@ -12,7 +12,7 @@ FlightSearch is a web application designed to help users find the best flights a
 - Choose number of tickets and ticket class
 - View recent searches and popular destinations
 
-### Technology Stack
+## Technology Stack
 
 - React.js
 - Next.js
@@ -20,11 +20,11 @@ FlightSearch is a web application designed to help users find the best flights a
 - TypeScript
 - Vercel
 
-### Deployment
+## Deployment
 
 The FlightSearch application is deployed on Vercel. You can access the live version of the application here: https://flightsearch-bp.vercel.app
 
-### Installation
+## Installation
 
 To run the FlightSearch application locally, follow these steps:
 
