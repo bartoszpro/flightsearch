@@ -11,7 +11,7 @@ export default function SearchBarOneWay() {
   const [startDate, setStartDate] = useState<string>("2024-09-15");
   const [sourceCity, setSourceCity] = useState<string>("");
   const [destinationCity, setDestinationCity] = useState<string>("");
-  const [tripType, setTripType] = useState<string>("One-way");
+  const [tripType, setTripType] = useState<string>("One Way");
   const [sourceAirportCode, setSourceAirportCode] = useState<string>("");
   const [destinationAirportCode, setDestinationAirportCode] =
     useState<string>("");

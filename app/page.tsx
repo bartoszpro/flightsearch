@@ -87,29 +87,33 @@ const Home: React.FC = () => {
               Round Trip
             </span>
           </button>
+          {/* 
           <button
-            onClick={() => setTripType("One-way")}
+            onClick={() => setTripType("One Way")}
             className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
-              tripType === "One-way"
+              tripType === "One Way"
                 ? "bg-emerald-600 text-white"
                 : "bg-white text-emerald-600"
             }`}
           >
             <span
               className={`absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 ${
-                tripType === "One-way"
+                tripType === "One Way"
                   ? "bg-emerald-500 opacity-90"
                   : "bg-emerald-500 group-hover:h-full group-hover:opacity-90"
               }`}
             ></span>
             <span
               className={`relative ${
-                tripType === "One-way" ? "text-white" : "group-hover:text-white"
+                tripType === "One Way"
+                  ? "text-white"
+                  : "group-hover:text-white"
               }`}
             >
               One-way
             </span>
           </button>
+          */}
         </div>
 
         <div
@@ -117,7 +121,7 @@ const Home: React.FC = () => {
           style={{ zIndex: 10 }}
         >
           {tripType === "Round Trip" && <SearchBarRoundTrip />}
-          {tripType === "One-way" && <SearchBarOneWay />}
+          {tripType === "One Way" && <SearchBarOneWay />}
           {tripType === "Multi-city" && <SearchBarMultiCity />}
         </div>
       </div>
@@ -169,7 +173,6 @@ const Home: React.FC = () => {
           })}
         </div>
       </div>
-
       <PopularDestinationsGrid />
       <Footer />
     </>
