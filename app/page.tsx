@@ -13,6 +13,7 @@ import SearchBarMultiCity from "./components/SearchBarMultiCity";
 import dayjs from "dayjs";
 import { FaArrowRight, FaLongArrowAltRight } from "react-icons/fa";
 import Link from "next/link";
+import SearchBarRoundTripMobile from "./components/SearchBarRoundTripMobile";
 
 const Home: React.FC = () => {
   const [tripType, setTripType] = useState<string>("Round Trip");
@@ -55,7 +56,7 @@ const Home: React.FC = () => {
           alt='Fixed Height Image'
           style={{ zIndex: 1 }}
         />
-        <h1 className='absolute top-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-md whitespace-nowrap text-xl sm:text-3xl text-outline-emerald-mob font-medium text-outline-emerald-reg'>
+        <h1 className='absolute top-16 lg:top-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-md whitespace-nowrap text-xl sm:text-3xl text-outline-emerald-mob font-medium text-outline-emerald-reg'>
           Find the best flight for the right price
         </h1>
         <div
@@ -64,7 +65,7 @@ const Home: React.FC = () => {
         >
           <button
             onClick={() => setTripType("Round Trip")}
-            className={`drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
+            className={`mb-12 lg:mb-0 drop-shadow-md border border-emerald-600 px-5 py-2.5 relative rounded group overflow-hidden font-medium inline-block ${
               tripType === "Round Trip"
                 ? "bg-emerald-600 text-white"
                 : "bg-white text-emerald-600"
@@ -117,16 +118,25 @@ const Home: React.FC = () => {
         </div>
 
         <div
-          className='absolute top-64 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4'
-          style={{ zIndex: 10 }}
-        >
-          {tripType === "Round Trip" && <SearchBarRoundTrip />}
-          {tripType === "One Way" && <SearchBarOneWay />}
-          {tripType === "Multi-city" && <SearchBarMultiCity />}
-        </div>
+  className='absolute top-64 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4'
+  style={{ zIndex: 10 }}
+>
+  <div className='lg:hidden'>
+    {tripType === "Round Trip" && <SearchBarRoundTripMobile />}
+    {tripType === "One Way" && <SearchBarOneWay />} {/* Add mobile version if needed */}
+    {tripType === "Multi-city" && <SearchBarMultiCity />} {/* Add mobile version if needed */}
+  </div>
+  
+  <div className='hidden lg:block'>
+    {tripType === "Round Trip" && <SearchBarRoundTrip />}
+    {tripType === "One Way" && <SearchBarOneWay />}
+    {tripType === "Multi-city" && <SearchBarMultiCity />}
+  </div>
+</div>
+
       </div>
 
-      <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl'>
+      <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl px-2'>
         <h2 className='text-black text-lg font-medium'>Recent searches</h2>
         <p className='text-xs text-gray-600 mb-4'>
           Your most recent searches saved just for you.

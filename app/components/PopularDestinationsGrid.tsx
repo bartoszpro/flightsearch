@@ -39,7 +39,7 @@ const PopularDestinationsGrid: React.FC = () => {
   ];
 
   return (
-    <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl'>
+    <div className='max-w-screen-xl mx-auto mt-4 bg-white rounded-2xl px-2'>
       <h2 className='text-black text-lg font-medium'>Popular destinations</h2>
       <p className='text-xs text-gray-600 mb-4'>
         Fare data may be cached and not reflect real-time pricing.
