@@ -31,7 +31,7 @@ To run the FlightSearch application locally, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/flightsearch.git
+git clone https://github.com/bartoszpro/flightsearch.git
 cd flightsearch
 ```
 
